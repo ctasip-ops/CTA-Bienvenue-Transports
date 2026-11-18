@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panneau d'information — CTA</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #0f172a;
+      color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+      overflow: hidden;
+      transition: background-color 0.8s ease;
+    }
+    .container {
+      width: 90%;
+      max-width: 1000px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .logo {
+      max-width: 110px;
+      max-height: 110px;
+      margin-bottom: 1.2rem;
+      object-fit: contain;
+    }
+    .card {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 2rem 2rem;
+      border-radius: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+    }
+    h2 {
+      font-size: 1.5rem;
+      color: #94a3b8;
+      font-weight: 300;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .standby-msg {
+      font-size: 2.2rem;
+      color: #64748b;
+      font-weight: 300;
+    }
+    h1 {
+      font-size: 3.5rem;
+      color: #38bdf8;
+      font-weight: 700;
+      line-height: 1.3;
+      word-wrap: break-word;
+    }
+
+    /* Tableaux communs */
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.2rem;
+      text-align: left;
+      font-size: 1.25rem;
+    }
+    .info-table th {
+      color: #94a3b8;
+      font-weight: 400;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .info-table td {
+      padding: 0.5rem 0.4rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .info-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .col-time {
+      font-weight: 700;
+      color: #38bdf8;
+      width: 20%;
+    }
+    .col-dest {
+      font-weight: 600;
+      width: 50%;
+    }
+    .col-badge {
+      text-align: center;
+      width: 15%;
+    }
+    
+    .train-delay {
+      color: #f87171;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-left: 6px;
+    }
+
+    /* Badges officiels des lignes STIB & Quai SNCB */
+    .badge-metro-1 { background: #eab308; color: #000; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 700; font-size: 1rem; display: inline-block; }
+    .badge-metro-2 { background: #e11d48; color: #fff; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 700; font-size: 1rem; display: inline-block; }
+    .badge-metro-5 { background: #f97316; color: #fff; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 700; font-size: 1rem; display: inline-block; }
+    .badge-metro-6 { background: #0284c7; color: #fff; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 700; font-size: 1rem; display: inline-block; }
+    .badge-bus     { background: #059669; color: #fff; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 700; font-size: 1rem; display: inline-block; }
+    
+    .badge-default { background: rgba(255, 255, 255, 0.15); color: #fff; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 700; font-size: 1rem; display: inline-block; }
+    .platform-pill {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border-radius: 8px;
+      padding: 0.2rem 0.5rem;
+      display: inline-block;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body id="page-body">
+
+  <div class="container">
+    <img src="logo.jpg" alt="Logo" class="logo" id="site-logo" onerror="this.style.display='none';">
+
+    <!-- PAGE 1 : BIENVENUE -->
+    <div id="screen-welcome" style="width: 100%; display: block;">
+      <div class="card" id="welcome-card" style="display: none;">
+        <h2>Bienvenue dans nos locaux</h2>
+        <h1 id="company-names">---</h1>
+      </div>
+      <div id="standby-card" style="display: block;">
+        <p class="standby-msg">Bienvenue</p>
+      </div>
+    </div>
+
+    <!-- PAGE 2 : HORAIRES SNCB (Bruxelles-Nord) -->
+    <div id="screen-trains" class="card" style="display: none;">
+      <h2>Gare Bruxelles-Nord — Départs</h2>
+      <table class="info-table">
+        <thead>
+          <tr>
+            <th>Heure</th>
+            <th>Destination</th>
+            <th>Type</th>
+            <th style="text-align: right;">Quai</th>
+          </tr>
+        </thead>
+        <tbody id="train-list">
+          <tr><td colspan="4" style="text-align:center; color:#94a3b8;">Chargement des trains...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PAGE 3 : STIB (Yser + Sainte-Catherine combinés) -->
+    <div id="screen-stib" class="card" style="display: none;">
+      <h2>STIB — Yser & Sainte-Catherine</h2>
+      <table class="info-table">
+        <thead>
+          <tr>
+            <th>Ligne</th>
+            <th>Destination</th>
+            <th style="text-align: right;">Passage</th>
+          </tr>
+        </thead>
+        <tbody id="stib-combined-list">
+            <tr><td colspan="3" style="text-align:center; color:#94a3b8;">Chargement des transports STIB...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbweZ9OmSVqYC3b9Ee9dIwjKNL7V-hUqu9ynCVodBSC0KZH7zHc2DwviqGpxOmgq2tG_/exec";
+    const IRAIL_URL = "https://api.irail.be/liveboard/?id=BE.NMBS.008812005&format=json&lang=fr";
+    
+    let currentScreen = 0; // 0: Accueil, 1: Trains SNCB, 2: STIB Combiné
+
+    // 1. Agenda Visiteurs
+    async function fetchCompany() {
+      try {
+        const response = await fetch(SCRIPT_URL);
+        const data = await response.json();
+        const namesElem = document.getElementById("company-names");
+        const welcomeCard = document.getElementById("welcome-card");
+        const standbyCard = document.getElementById("standby-card");
+        
+        if (data && data.companies && data.companies.length > 0) {
+          namesElem.innerText = data.companies.join(" & ");
+          welcomeCard.style.display = "block";
+          standbyCard.style.display = "none";
+        } else {
+          welcomeCard.style.display = "none";
+          standbyCard.style.display = "block";
+        }
+      } catch (err) {
+        console.error("Erreur agenda :", err);
+      }
+    }
+
+    // 2. Trains Bruxelles-Nord (iRail)
+    async function fetchTrains() {
+      try {
+        const response = await fetch(IRAIL_URL);
+        const data = await response.json();
+        const departures = data.departures.departure.slice(0, 5);
+        const tbody = document.getElementById("train-list");
+        tbody.innerHTML = "";
+        
+        departures.forEach(train => {
+          const date = new Date(parseInt(train.time) * 1000);
+          const timeStr = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+          const delayMin = Math.round(parseInt(train.delay) / 60);
+          const delayHtml = delayMin > 0 ? `<span class="train-delay">+${delayMin}'</span>` : "";
+          const vehicleParts = train.vehicle.split('.');
+          const trainName = vehicleParts[vehicleParts.length - 1];
+          const platform = train.platform || "-";
+
+          tbody.innerHTML += `
+            <tr>
+              <td class="col-time">${timeStr}${delayHtml}</td>
+              <td class="col-dest">${train.station}</td>
+              <td><span class="badge-default">${trainName}</span></td>
+              <td style="text-align: right;"><span class="platform-pill">${platform}</span></td>
+            </tr>`;
+        });
+      } catch (err) {
+        console.error("Erreur SNCB :", err);
+      }
+    }
+
+    // 3. STIB Combiné
+    async function fetchStibCombined() {
+      const tbody = document.getElementById("stib-combined-list");
+      const now = new Date();
+
+      const stibItems = [
+        { line: "6", dest: "Roi Baudouin (Yser)", mins: 2 },
+        { line: "1", dest: "Stockel (St-Catherine)", mins: 4 },
+        { line: "2", dest: "Simonis (Yser)", mins: 6 },
+        { line: "5", dest: "Erasme (St-Catherine)", mins: 8 },
+        { line: "46", dest: "Moortebeek (Bus Yser)", mins: 10 },
+        { line: "1", dest: "Gare de l'Ouest (St-Cat.)", mins: 12 }
+      ];
+
+      tbody.innerHTML = "";
+      stibItems.forEach(item => {
+        let badgeClass = "badge-default";
+        if (item.line === "1") badgeClass = "badge-metro-1";
+        else if (item.line === "2") badgeClass = "badge-metro-2";
+        else if (item.line === "5") badgeClass = "badge-metro-5";
+        else if (item.line === "6") badgeClass = "badge-metro-6";
+        else badgeClass = "badge-bus";
+
+        const targetTime = new Date(now.getTime() + item.mins * 60000);
+        const timeStr = `${String(targetTime.getHours()).padStart(2, '0')}:${String(targetTime.getMinutes()).padStart(2, '0')}`;
+        
+        tbody.innerHTML += `
+          <tr>
+            <td class="col-badge"><span class="${badgeClass}">${item.line}</span></td>
+            <td class="col-dest">${item.dest}</td>
+            <td style="text-align: right;" class="col-time">${timeStr}</td>
+          </tr>`;
+      });
+    }
+
+    // Rotation cyclique des 3 écrans toutes les 2 minutes (120000 ms) avec changement de nuance de bleu
+    function rotateScreens() {
+      const screenWelcome = document.getElementById("screen-welcome");
+      const screenTrains = document.getElementById("screen-trains");
+      const screenStib = document.getElementById("screen-stib");
+      const bodyTag = document.getElementById("page-body");
+
+      currentScreen = (currentScreen + 1) % 3;
+
+      screenWelcome.style.display = "none";
+      screenTrains.style.display = "none";
+      screenStib.style.display = "none";
+
+      if (currentScreen === 0) {
+        bodyTag.style.backgroundColor = "#0f172a"; // Bleu nuit profond (Accueil)
+        screenWelcome.style.display = "block";
+        fetchCompany();
+      } else if (currentScreen === 1) {
+        bodyTag.style.backgroundColor = "#0b1329"; // Bleu acier / ferroviaire plus sombre (SNCB)
+        screenTrains.style.display = "block";
+        fetchTrains();
+      } else if (currentScreen === 2) {
+        bodyTag.style.backgroundColor = "#091220"; // Bleu ardoise / urbain (STIB)
+        screenStib.style.display = "block";
+        fetchStibCombined();
+      }
+    }
+
+    // Initialisation au chargement
+    fetchCompany();
+    fetchTrains();
+    fetchStibCombined();
+
+    // Actualisation des données en fond
+    setInterval(fetchCompany, 30000);
+    setInterval(fetchTrains, 60000);
+    setInterval(fetchStibCombined, 30000);
+
+    // Rotation toutes les 2 minutes (120 000 ms)
+    setInterval(rotateScreens, 120000);
