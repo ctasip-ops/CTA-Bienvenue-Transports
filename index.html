@@ -19,13 +19,13 @@
       min-height: 100vh;
       text-align: center;
       overflow: hidden;
-      transition: background-color 0.5s ease;
+      transition: background-color 0.6s ease;
     }
 
-    /* Fonds d'écran bleus distincts pour chaque page */
-    body.bg-screen-0 { background-color: #090d16; } /* Accueil : Bleu nuit profond */
-    body.bg-screen-1 { background-color: #0f172a; } /* SNCB : Bleu ardoise */
-    body.bg-screen-2 { background-color: #0e1e36; } /* STIB : Bleu marin subtil */
+    /* Nuances de bleu uniques pour chaque écran */
+    body.bg-screen-0 { background-color: #070b14; } /* Écran 1 (Accueil) : Bleu nuit très profond */
+    body.bg-screen-1 { background-color: #0d1b2a; } /* Écran 2 (SNCB) : Bleu ardoise / acier */
+    body.bg-screen-2 { background-color: #0c182c; } /* Écran 3 (STIB) : Bleu marin / nuit douce */
 
     .container {
       width: 95%;
@@ -64,25 +64,26 @@
       padding: 2rem 0;
     }
 
-    /* Style spécifique pour la liste séparée des rendez-vous / visiteurs */
+    /* Liste des rendez-vous avec un encadré séparé pour chaque occurrence */
     .company-list {
       display: flex;
       flex-direction: column;
-      gap: 21px; /* 21px d'espacement exact par rendez-vous */
+      gap: 21px; /* Espacement exact de 21px entre chaque encadré */
       width: 100%;
       align-items: center;
     }
     .company-item {
-      font-size: 3rem;
+      font-size: 2.8rem;
       color: #38bdf8;
       font-weight: 700;
       line-height: 1.2;
       word-wrap: break-word;
       background: rgba(56, 189, 248, 0.08);
-      padding: 1rem 2rem;
+      padding: 1.2rem 2rem;
       border-radius: 16px;
-      border: 1px solid rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.2);
       width: 100%;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
     }
 
     /* Tableaux optimisés pour maximiser la vue sur 1 seule page */
@@ -154,7 +155,7 @@
   <div class="container">
     <img src="logo.jpg" alt="Logo" class="logo" id="site-logo" onerror="this.style.display='none';">
 
-    <!-- PAGE 1 : BIENVENUE & AGENDA (Séparés avec 21px d'écart) -->
+    <!-- PAGE 1 : BIENVENUE & AGENDA (Occurrences séparées par des encadrés distincts) -->
     <div id="screen-welcome" style="width: 100%; display: block;">
       <div class="card" id="welcome-card" style="display: none;">
         <h2>Bienvenue dans nos locaux</h2>
@@ -211,7 +212,7 @@
     
     let currentScreen = 0; // 0: Accueil, 1: Trains SNCB, 2: STIB Combiné
 
-    // 1. Agenda Visiteurs (affichage séparé par blocs de 21px)
+    // 1. Agenda Visiteurs (création d'un encadré distinct par occurrence)
     async function fetchCompany() {
       try {
         const response = await fetch(SCRIPT_URL);
@@ -244,7 +245,7 @@
       try {
         const response = await fetch(IRAIL_URL);
         const data = await response.json();
-        const departures = data.departures.departure.slice(0, 6); // Affichage optimisé de 6 lignes
+        const departures = data.departures.departure.slice(0, 6);
         const tbody = document.getElementById("train-list");
         tbody.innerHTML = "";
         
@@ -305,7 +306,7 @@
       });
     }
 
-    // Rotation cyclique des 3 écrans avec mise à jour dynamique de la classe de fond (bleu différent par page)
+    // Rotation cyclique des écrans et mise à jour de la classe de couleur de fond (bleu spécifique par page)
     function rotateScreens() {
       const screenWelcome = document.getElementById("screen-welcome");
       const screenTrains = document.getElementById("screen-trains");
@@ -317,6 +318,8 @@
       screenWelcome.style.display = "none";
       screenTrains.style.display = "none";
       screenStib.style.display = "none";
+      
+      // Change la nuance de bleu du fond selon l'écran actif
       bodyTag.className = `bg-screen-${currentScreen}`;
 
       if (currentScreen === 0) {
@@ -336,12 +339,12 @@
     fetchTrains();
     fetchStibCombined();
 
-    // Actualisation des données en fond
+    // Actualisation des données en arrière-plan
     setInterval(fetchCompany, 30000);
     setInterval(fetchTrains, 60000);
     setInterval(fetchStibCombined, 30000);
 
-    // Rotation de l'affichage toutes les 2 minutes (120 000 ms)
+    // Rotation toutes les 2 minutes (120 000 ms)
     setInterval(rotateScreens, 120000);
   </script>
 </body>
