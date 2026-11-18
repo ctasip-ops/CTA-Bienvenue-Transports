@@ -11,7 +11,6 @@
       padding: 0;
     }
     body {
-      background-color: #0f172a;
       color: #ffffff;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       display: flex;
@@ -20,69 +19,91 @@
       min-height: 100vh;
       text-align: center;
       overflow: hidden;
+      transition: background-color 0.5s ease;
     }
+
+    /* Fonds d'écran bleus distincts pour chaque page */
+    body.bg-screen-0 { background-color: #090d16; } /* Accueil : Bleu nuit profond */
+    body.bg-screen-1 { background-color: #0f172a; } /* SNCB : Bleu ardoise */
+    body.bg-screen-2 { background-color: #0e1e36; } /* STIB : Bleu marin subtil */
+
     .container {
-      width: 90%;
-      max-width: 1000px;
+      width: 95%;
+      max-width: 1200px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
     .logo {
-      max-width: 110px;
-      max-height: 110px;
-      margin-bottom: 1.2rem;
+      max-width: 100px;
+      max-height: 100px;
+      margin-bottom: 1rem;
       object-fit: contain;
     }
     .card {
       width: 100%;
       background: rgba(255, 255, 255, 0.04);
-      padding: 2rem 2rem;
-      border-radius: 32px;
+      padding: 2rem 2.5rem;
+      border-radius: 28px;
       border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(10px);
     }
     h2 {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       color: #94a3b8;
       font-weight: 300;
-      margin-bottom: 0.8rem;
+      margin-bottom: 1rem;
       text-transform: uppercase;
       letter-spacing: 2px;
     }
     .standby-msg {
-      font-size: 2.2rem;
+      font-size: 2.5rem;
       color: #64748b;
       font-weight: 300;
-    }
-    h1 {
-      font-size: 3.5rem;
-      color: #38bdf8;
-      font-weight: 700;
-      line-height: 1.3;
-      word-wrap: break-word;
+      padding: 2rem 0;
     }
 
-    /* Tableaux communs */
+    /* Style spécifique pour la liste séparée des rendez-vous / visiteurs */
+    .company-list {
+      display: flex;
+      flex-direction: column;
+      gap: 21px; /* 21px d'espacement exact par rendez-vous */
+      width: 100%;
+      align-items: center;
+    }
+    .company-item {
+      font-size: 3rem;
+      color: #38bdf8;
+      font-weight: 700;
+      line-height: 1.2;
+      word-wrap: break-word;
+      background: rgba(56, 189, 248, 0.08);
+      padding: 1rem 2rem;
+      border-radius: 16px;
+      border: 1px solid rgba(56, 189, 248, 0.15);
+      width: 100%;
+    }
+
+    /* Tableaux optimisés pour maximiser la vue sur 1 seule page */
     .info-table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 0.2rem;
       text-align: left;
-      font-size: 1.25rem;
+      font-size: 1.3rem;
     }
     .info-table th {
       color: #94a3b8;
       font-weight: 400;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       text-transform: uppercase;
       letter-spacing: 1.5px;
-      padding-bottom: 0.5rem;
+      padding-bottom: 0.6rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     .info-table td {
-      padding: 0.5rem 0.4rem;
+      padding: 0.65rem 0.5rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
     .info-table tr:last-child td {
@@ -92,11 +113,11 @@
     .col-time {
       font-weight: 700;
       color: #38bdf8;
-      width: 20%;
+      width: 18%;
     }
     .col-dest {
       font-weight: 600;
-      width: 50%;
+      width: 55%;
     }
     .col-badge {
       text-align: center;
@@ -110,7 +131,7 @@
       margin-left: 6px;
     }
 
-    /* Badges officiels des lignes STIB & Quai SNCB */
+    /* Badges officiels STIB & Quai SNCB */
     .badge-metro-1 { background: #eab308; color: #000; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 700; font-size: 1rem; display: inline-block; }
     .badge-metro-2 { background: #e11d48; color: #fff; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 700; font-size: 1rem; display: inline-block; }
     .badge-metro-5 { background: #f97316; color: #fff; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 700; font-size: 1rem; display: inline-block; }
@@ -128,19 +149,23 @@
     }
   </style>
 </head>
-<body>
+<body class="bg-screen-0">
 
   <div class="container">
     <img src="logo.jpg" alt="Logo" class="logo" id="site-logo" onerror="this.style.display='none';">
 
-    <!-- PAGE 1 : BIENVENUE -->
+    <!-- PAGE 1 : BIENVENUE & AGENDA (Séparés avec 21px d'écart) -->
     <div id="screen-welcome" style="width: 100%; display: block;">
       <div class="card" id="welcome-card" style="display: none;">
         <h2>Bienvenue dans nos locaux</h2>
-        <h1 id="company-names">---</h1>
+        <div id="company-container" class="company-list">
+          <!-- Injecté dynamiquement -->
+        </div>
       </div>
       <div id="standby-card" style="display: block;">
-        <p class="standby-msg">Bienvenue</p>
+        <div class="card">
+          <p class="standby-msg">Bienvenue</p>
+        </div>
       </div>
     </div>
 
@@ -186,17 +211,23 @@
     
     let currentScreen = 0; // 0: Accueil, 1: Trains SNCB, 2: STIB Combiné
 
-    // 1. Agenda Visiteurs
+    // 1. Agenda Visiteurs (affichage séparé par blocs de 21px)
     async function fetchCompany() {
       try {
         const response = await fetch(SCRIPT_URL);
         const data = await response.json();
-        const namesElem = document.getElementById("company-names");
+        const container = document.getElementById("company-container");
         const welcomeCard = document.getElementById("welcome-card");
         const standbyCard = document.getElementById("standby-card");
         
         if (data && data.companies && data.companies.length > 0) {
-          namesElem.innerText = data.companies.join(" & ");
+          container.innerHTML = "";
+          data.companies.forEach(companyName => {
+            const div = document.createElement("div");
+            div.className = "company-item";
+            div.innerText = companyName;
+            container.appendChild(div);
+          });
           welcomeCard.style.display = "block";
           standbyCard.style.display = "none";
         } else {
@@ -213,7 +244,7 @@
       try {
         const response = await fetch(IRAIL_URL);
         const data = await response.json();
-        const departures = data.departures.departure.slice(0, 5);
+        const departures = data.departures.departure.slice(0, 6); // Affichage optimisé de 6 lignes
         const tbody = document.getElementById("train-list");
         tbody.innerHTML = "";
         
@@ -239,7 +270,7 @@
       }
     }
 
-    // 3. STIB Combiné (Yser : métros 2, 6 et bus 46 + Sainte-Catherine : métros 1, 5)
+    // 3. STIB Combiné (Yser & Sainte-Catherine)
     async function fetchStibCombined() {
       const tbody = document.getElementById("stib-combined-list");
       const now = new Date();
@@ -274,17 +305,19 @@
       });
     }
 
-    // Rotation cyclique des 3 écrans toutes les 2 minutes (120000 ms)
+    // Rotation cyclique des 3 écrans avec mise à jour dynamique de la classe de fond (bleu différent par page)
     function rotateScreens() {
       const screenWelcome = document.getElementById("screen-welcome");
       const screenTrains = document.getElementById("screen-trains");
       const screenStib = document.getElementById("screen-stib");
+      const bodyTag = document.body;
 
       currentScreen = (currentScreen + 1) % 3;
 
       screenWelcome.style.display = "none";
       screenTrains.style.display = "none";
       screenStib.style.display = "none";
+      bodyTag.className = `bg-screen-${currentScreen}`;
 
       if (currentScreen === 0) {
         screenWelcome.style.display = "block";
@@ -308,8 +341,8 @@
     setInterval(fetchTrains, 60000);
     setInterval(fetchStibCombined, 30000);
 
-    // Rotation toutes les 10 secondes (120 000 ms)
-    setInterval(rotateScreens, 12000);
+    // Rotation de l'affichage toutes les 2 minutes (120 000 ms)
+    setInterval(rotateScreens, 120000);
   </script>
 </body>
 </html>
