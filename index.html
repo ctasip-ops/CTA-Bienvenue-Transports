@@ -16,8 +16,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 100vw;
-      height: 100vh;
+      min-height: 100vh;
       text-align: center;
       overflow: hidden;
       transition: background-color 0.6s ease;
@@ -29,75 +28,54 @@
     body.bg-screen-2 { background-color: #0c182c; } /* Écran 3 (STIB) : Bleu marin / nuit douce */
 
     .container {
-      width: 100%;
-      height: 100%;
-      max-width: none;
-      padding: 1.5vh 2vw;
+      width: 98%;
+      max-width: 1450px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
     .logo {
-      max-width: 72px;
-      max-height: 72px;
-      margin-bottom: 1vh;
+      max-width: 95px;
+      max-height: 95px;
+      margin-bottom: 1rem;
       object-fit: contain;
-      flex-shrink: 0;
     }
     .card {
       width: 100%;
-      flex: 1;
       background: rgba(255, 255, 255, 0.04);
-      padding: 2vh 2.5vw;
+      padding: 2rem 2.5rem;
       border-radius: 28px;
       border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(10px);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
     }
 
-    /* Cartes maximisées pour les pages 2 (SNCB) et 3 (STIB) */
+    /* Cartes agrandies pour les pages 2 (SNCB) et 3 (STIB) */
     .card-transport {
-      width: 100%;
-      flex: 1;
-      height: 100%;
-      padding: 2.2vh 3vw;
-      justify-content: flex-start;
+      min-height: 76vh;
+      padding: 2.2rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     .card-transport h2 {
-      font-size: clamp(1.8rem, 2.6vw, 2.8rem);
-      margin-bottom: 1.5vh;
-      flex-shrink: 0;
+      font-size: 2.1rem;
+      margin-bottom: 1.2rem;
     }
 
     h2 {
-      font-size: clamp(1.5rem, 2.2vw, 2.2rem);
+      font-size: 1.6rem;
       color: #94a3b8;
-      font-weight: 400;
-      margin-bottom: 1.5vh;
+      font-weight: 300;
+      margin-bottom: 1rem;
       text-transform: uppercase;
       letter-spacing: 2px;
     }
     .standby-msg {
-      font-size: clamp(2.4rem, 4.5vw, 4rem);
+      font-size: 2.5rem;
       color: #64748b;
       font-weight: 300;
       padding: 2rem 0;
-    }
-
-    #screen-welcome {
-      width: 100%;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    #screen-welcome > div {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
     }
 
     /* Liste des rendez-vous avec un encadré séparé pour chaque occurrence */
@@ -106,52 +84,43 @@
       flex-direction: column;
       gap: 21px; /* Espacement exact de 21px entre chaque encadré */
       width: 100%;
-      flex: 1;
-      justify-content: center;
       align-items: center;
     }
     .company-item {
-      font-size: clamp(2.2rem, 3.8vw, 3.6rem);
+      font-size: 2.8rem;
       color: #38bdf8;
       font-weight: 700;
       line-height: 1.2;
       word-wrap: break-word;
       background: rgba(56, 189, 248, 0.08);
-      padding: 2vh 2.5vw;
+      padding: 1.2rem 2rem;
       border-radius: 16px;
       border: 1px solid rgba(56, 189, 248, 0.2);
       width: 100%;
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
     }
 
-    /* Tableaux étirés sur toute la largeur et la hauteur disponible */
+    /* Tableaux agrandis pour occuper l'espace sur les écrans 2 et 3 */
     .info-table {
       width: 100%;
-      flex: 1;
       height: 100%;
       border-collapse: collapse;
+      margin-top: 0.4rem;
       text-align: left;
-      font-size: clamp(1.75rem, 2.5vw, 2.65rem);
-    }
-    .info-table thead {
-      display: table-header-group;
-    }
-    .info-table tbody {
-      height: 100%;
+      font-size: 1.85rem;
     }
     .info-table th {
       color: #94a3b8;
-      font-weight: 600;
-      font-size: clamp(1.05rem, 1.4vw, 1.5rem);
+      font-weight: 500;
+      font-size: 1.2rem;
       text-transform: uppercase;
       letter-spacing: 1.5px;
-      padding-bottom: 1vh;
-      border-bottom: 2px solid rgba(255, 255, 255, 0.14);
+      padding-bottom: 0.9rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     }
     .info-table td {
-      padding: 0.8vh 0.8vw;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      vertical-align: middle;
+      padding: 1.15rem 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     }
     .info-table tr:last-child td {
       border-bottom: none;
@@ -160,42 +129,40 @@
     .col-time {
       font-weight: 700;
       color: #38bdf8;
-      width: 22%;
-      white-space: nowrap;
+      width: 20%;
     }
     .col-dest {
       font-weight: 600;
-      width: 50%;
+      width: 52%;
     }
     .col-badge {
       text-align: center;
-      width: 15%;
+      width: 16%;
     }
     
     .train-delay {
       color: #f87171;
-      font-size: clamp(1.3rem, 1.9vw, 2rem);
-      font-weight: 700;
+      font-size: 1.45rem;
+      font-weight: 600;
       margin-left: 8px;
     }
 
     /* Badges officiels STIB & Quai SNCB agrandis */
-    .badge-metro-1 { background: #eab308; color: #000; padding: 0.35rem 1rem; border-radius: 10px; font-weight: 700; font-size: clamp(1.35rem, 2vw, 2.1rem); display: inline-block; }
-    .badge-metro-2 { background: #e11d48; color: #fff; padding: 0.35rem 1rem; border-radius: 10px; font-weight: 700; font-size: clamp(1.35rem, 2vw, 2.1rem); display: inline-block; }
-    .badge-metro-5 { background: #f97316; color: #fff; padding: 0.35rem 1rem; border-radius: 10px; font-weight: 700; font-size: clamp(1.35rem, 2vw, 2.1rem); display: inline-block; }
-    .badge-metro-6 { background: #0284c7; color: #fff; padding: 0.35rem 1rem; border-radius: 10px; font-weight: 700; font-size: clamp(1.35rem, 2vw, 2.1rem); display: inline-block; }
-    .badge-bus     { background: #059669; color: #fff; padding: 0.35rem 1rem; border-radius: 10px; font-weight: 700; font-size: clamp(1.35rem, 2vw, 2.1rem); display: inline-block; }
+    .badge-metro-1 { background: #eab308; color: #000; padding: 0.3rem 0.85rem; border-radius: 8px; font-weight: 700; font-size: 1.5rem; display: inline-block; }
+    .badge-metro-2 { background: #e11d48; color: #fff; padding: 0.3rem 0.85rem; border-radius: 8px; font-weight: 700; font-size: 1.5rem; display: inline-block; }
+    .badge-metro-5 { background: #f97316; color: #fff; padding: 0.3rem 0.85rem; border-radius: 8px; font-weight: 700; font-size: 1.5rem; display: inline-block; }
+    .badge-metro-6 { background: #0284c7; color: #fff; padding: 0.3rem 0.85rem; border-radius: 8px; font-weight: 700; font-size: 1.5rem; display: inline-block; }
+    .badge-bus     { background: #059669; color: #fff; padding: 0.3rem 0.85rem; border-radius: 8px; font-weight: 700; font-size: 1.5rem; display: inline-block; }
     
-    .badge-default { background: rgba(255, 255, 255, 0.15); color: #fff; padding: 0.35rem 0.95rem; border-radius: 10px; font-weight: 700; font-size: clamp(1.3rem, 1.9vw, 2rem); display: inline-block; }
+    .badge-default { background: rgba(255, 255, 255, 0.15); color: #fff; padding: 0.3rem 0.8rem; border-radius: 8px; font-weight: 700; font-size: 1.4rem; display: inline-block; }
     .platform-pill {
-      background: rgba(56, 189, 248, 0.16);
+      background: rgba(56, 189, 248, 0.15);
       color: #38bdf8;
-      border-radius: 12px;
-      padding: 0.4rem 1rem;
+      border-radius: 10px;
+      padding: 0.35rem 0.85rem;
       display: inline-block;
       font-weight: 700;
-      font-size: clamp(1.45rem, 2.2vw, 2.3rem);
-      white-space: nowrap;
+      font-size: 1.6rem;
     }
   </style>
 </head>
@@ -205,13 +172,205 @@
     <img src="logo.jpg" alt="Logo" class="logo" id="site-logo" onerror="this.style.display='none';">
 
     <!-- PAGE 1 : BIENVENUE & AGENDA (Occurrences séparées par des encadrés distincts) -->
-    <div id="screen-welcome" style="display: flex;">
+    <div id="screen-welcome" style="width: 100%; display: block;">
       <div class="card" id="welcome-card" style="display: none;">
         <h2>Bienvenue dans nos locaux</h2>
         <div id="company-container" class="company-list">
           <!-- Injecté dynamiquement -->
         </div>
       </div>
-      <div id="standby-card" style="display: flex;">
+      <div id="standby-card" style="display: block;">
         <div class="card">
-          <p class="standby
+          <p class="standby-msg">Bienvenue</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 2 : HORAIRES SNCB (Bruxelles-Nord) -->
+    <div id="screen-trains" class="card card-transport" style="display: none;">
+      <h2>Gare Bruxelles-Nord — Départs</h2>
+      <table class="info-table">
+        <thead>
+          <tr>
+            <th>Heure</th>
+            <th>Destination</th>
+            <th>Type</th>
+            <th style="text-align: right;">Quai</th>
+          </tr>
+        </thead>
+        <tbody id="train-list">
+          <tr><td colspan="4" style="text-align:center; color:#94a3b8;">Chargement des trains...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PAGE 3 : STIB (Yser + Sainte-Catherine combinés) -->
+    <div id="screen-stib" class="card card-transport" style="display: none;">
+      <h2>STIB — Yser & Sainte-Catherine</h2>
+      <table class="info-table">
+        <thead>
+          <tr>
+            <th style="text-align: center;">Ligne</th>
+            <th>Destination</th>
+            <th style="text-align: right;">Passage</th>
+          </tr>
+        </thead>
+        <tbody id="stib-combined-list">
+            <tr><td colspan="3" style="text-align:center; color:#94a3b8;">Chargement des transports STIB...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbweZ9OmSVqYC3b9Ee9dIwjKNL7V-hUqu9ynCVodBSC0KZH7zHc2DwviqGpxOmgq2tG_/exec";
+    const IRAIL_URL = "https://api.irail.be/liveboard/?id=BE.NMBS.008812005&format=json&lang=fr";
+    
+    let currentScreen = 0; // 0: Accueil, 1: Trains SNCB, 2: STIB Combiné
+
+    // 1. Agenda Visiteurs (création d'un encadré distinct par occurrence)
+    async function fetchCompany() {
+      try {
+        const response = await fetch(SCRIPT_URL);
+        const data = await response.json();
+        const container = document.getElementById("company-container");
+        const welcomeCard = document.getElementById("welcome-card");
+        const standbyCard = document.getElementById("standby-card");
+        
+        if (data && data.companies && data.companies.length > 0) {
+          container.innerHTML = "";
+          data.companies.forEach(companyName => {
+            const div = document.createElement("div");
+            div.className = "company-item";
+            div.innerText = companyName;
+            container.appendChild(div);
+          });
+          welcomeCard.style.display = "block";
+          standbyCard.style.display = "none";
+        } else {
+          welcomeCard.style.display = "none";
+          standbyCard.style.display = "block";
+        }
+      } catch (err) {
+        console.error("Erreur agenda :", err);
+      }
+    }
+
+    // 2. Trains Bruxelles-Nord (iRail)
+    async function fetchTrains() {
+      try {
+        const response = await fetch(IRAIL_URL);
+        const data = await response.json();
+        const departures = data.departures.departure.slice(0, 6);
+        const tbody = document.getElementById("train-list");
+        tbody.innerHTML = "";
+        
+        departures.forEach(train => {
+          const date = new Date(parseInt(train.time) * 1000);
+          const timeStr = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+          const delayMin = Math.round(parseInt(train.delay) / 60);
+          const delayHtml = delayMin > 0 ? `<span class="train-delay">+${delayMin}'</span>` : "";
+          const vehicleParts = train.vehicle.split('.');
+          const trainName = vehicleParts[vehicleParts.length - 1];
+          const platform = train.platform || "-";
+
+          tbody.innerHTML += `
+            <tr>
+              <td class="col-time">${timeStr}${delayHtml}</td>
+              <td class="col-dest">${train.station}</td>
+              <td><span class="badge-default">${trainName}</span></td>
+              <td style="text-align: right;"><span class="platform-pill">${platform}</span></td>
+            </tr>`;
+        });
+      } catch (err) {
+        console.error("Erreur SNCB :", err);
+      }
+    }
+
+    // 3. STIB Combiné (Yser & Sainte-Catherine)
+    async function fetchStibCombined() {
+      const tbody = document.getElementById("stib-combined-list");
+      const now = new Date();
+
+      const stibItems = [
+        { line: "6", dest: "Roi Baudouin (Yser)", mins: 2 },
+        { line: "1", dest: "Stockel (St-Catherine)", mins: 4 },
+        { line: "2", dest: "Simonis (Yser)", mins: 6 },
+        { line: "5", dest: "Erasme (St-Catherine)", mins: 8 },
+        { line: "46", dest: "Moortebeek (Bus Yser)", mins: 10 },
+        { line: "1", dest: "Gare de l'Ouest (St-Cat.)", mins: 12 }
+      ];
+
+      tbody.innerHTML = "";
+      stibItems.forEach(item => {
+        let badgeClass = "badge-default";
+        if (item.line === "1") badgeClass = "badge-metro-1";
+        else if (item.line === "2") badgeClass = "badge-metro-2";
+        else if (item.line === "5") badgeClass = "badge-metro-5";
+        else if (item.line === "6") badgeClass = "badge-metro-6";
+        else badgeClass = "badge-bus";
+
+        const targetTime = new Date(now.getTime() + item.mins * 60000);
+        const timeStr = `${String(targetTime.getHours()).padStart(2, '0')}:${String(targetTime.getMinutes()).padStart(2, '0')}`;
+        
+        tbody.innerHTML += `
+          <tr>
+            <td class="col-badge"><span class="${badgeClass}">${item.line}</span></td>
+            <td class="col-dest">${item.dest}</td>
+            <td style="text-align: right;" class="col-time">${timeStr}</td>
+          </tr>`;
+      });
+    }
+
+    // Rotation cyclique des écrans et mise à jour de la classe de couleur de fond (bleu spécifique par page)
+    function rotateScreens() {
+      const screenWelcome = document.getElementById("screen-welcome");
+      const screenTrains = document.getElementById("screen-trains");
+      const screenStib = document.getElementById("screen-stib");
+      const bodyTag = document.body;
+
+      currentScreen = (currentScreen + 1) % 3;
+
+      screenWelcome.style.display = "none";
+      screenTrains.style.display = "none";
+      screenStib.style.display = "none";
+      
+      // Change la nuance de bleu du fond selon l'écran actif
+      bodyTag.className = `bg-screen-${currentScreen}`;
+
+      if (currentScreen === 0) {
+        screenWelcome.style.display = "block";
+        fetchCompany();
+      } else if (currentScreen === 1) {
+        screenTrains.style.display = "flex";
+        fetchTrains();
+      } else if (currentScreen === 2) {
+        screenStib.style.display = "flex";
+        fetchStibCombined();
+      }
+    }
+
+    // Bascule en plein écran au clic/tap sur la tablette pour masquer la barre d'adresse
+    document.addEventListener("click", () => {
+      if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch((err) => {
+          console.warn("Plein écran non disponible :", err);
+        });
+      }
+    });
+
+    // Initialisation au chargement
+    fetchCompany();
+    fetchTrains();
+    fetchStibCombined();
+
+    // Actualisation des données en arrière-plan
+    setInterval(fetchCompany, 10000);
+    setInterval(fetchTrains, 10000);
+    setInterval(fetchStibCombined, 10000);
+
+    // Rotation toutes les 12 secondes (12000 ms)
+    setInterval(rotateScreens, 12000);
+  </script>
+</body>
+</html>
