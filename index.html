@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panneau d'information — CTA (v2.9)</title>
+  <title>Panneau d'information — CTA (v3.4)</title>
   <style>
     * {
       box-sizing: border-box;
@@ -31,11 +31,13 @@
     .container {
       width: 100%;
       height: 100%;
-      max-width: none;
-      padding: 1.5vh 2vw;
+      max-width: 100vw;
+      margin: 0 auto;
+      padding: 1.5vh 2vw 0.8vh 2vw;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      justify-content: space-between;
+      align-items: stretch;
     }
 
     /* Barre supérieure : Horloge/Date | Logo + Texte sur toutes les pages | Météo */
@@ -203,28 +205,29 @@
       flex-direction: column;
     }
 
-    /* Liste des rendez-vous avec un encadré séparé pour chaque occurrence */
+    /* Liste des rendez-vous avec un encadré séparé pour chaque occurrence (jusqu'à 5) */
     .company-list {
       display: flex;
       flex-direction: column;
-      gap: 21px;
+      gap: 10px;
       width: 100%;
       flex: 1;
       justify-content: center;
       align-items: center;
+      overflow: hidden;
     }
     .company-item {
-      font-size: clamp(2.2rem, 3.8vw, 3.6rem);
+      font-size: clamp(1.35rem, 2.35vw, 2.2rem);
       color: #38bdf8;
       font-weight: 700;
-      line-height: 1.2;
+      line-height: 1.15;
       word-wrap: break-word;
       background: rgba(56, 189, 248, 0.08);
-      padding: 2vh 2.5vw;
-      border-radius: 16px;
+      padding: 1.05vh 2vw;
+      border-radius: 14px;
       border: 1px solid rgba(56, 189, 248, 0.2);
       width: 100%;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.2);
     }
 
     /* Tableaux étirés sur toute la largeur et la hauteur disponible */
@@ -373,6 +376,45 @@
       transition: background-color 0.6s ease, filter 0.8s ease;
     }
 
+    /* Mise en avant du tout premier départ (SNCB & STIB) */
+    .info-table tbody tr:first-child {
+      background: linear-gradient(90deg, rgba(56, 189, 248, 0.16), rgba(56, 189, 248, 0.04));
+      box-shadow: inset 4px 0 0 #38bdf8;
+    }
+    .info-table tbody tr:first-child td {
+      padding-top: 1.05vh;
+      padding-bottom: 1.05vh;
+    }
+
+    /* Barre inférieure : aperçu du prochain écran centré */
+    .bottom-nav {
+      width: 100%;
+      margin-top: 0.8vh;
+      padding: 0.4vh 1vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      min-height: 36px;
+    }
+
+    .next-screen-hint {
+      font-size: clamp(0.95rem, 1.25vw, 1.25rem);
+      color: #94a3b8;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .next-screen-hint strong {
+      color: #cbd5e1;
+      font-weight: 600;
+    }
+
+    /* Protection anti-marquage (burn-in shift discret) */
+    .burnin-shift {
+      transition: transform 0.6s ease;
+    }
+
     /* Indicateur discret d'état / dernière synchro */
     .sync-status {
       position: fixed;
@@ -473,6 +515,10 @@
         </tbody>
       </table>
     </div>
+
+    <div class="bottom-nav" id="bottom-nav">
+      <div class="next-screen-hint" id="next-screen-hint">Prochain écran : <strong>Trains SNCB</strong></div>
+    </div>
   </div>
 
   <div class="sync-status" id="sync-status"></div>
@@ -554,7 +600,7 @@
 
         if (data && data.companies && data.companies.length > 0) {
           container.innerHTML = "";
-          data.companies.forEach(companyName => {
+          data.companies.slice(0, 5).forEach(companyName => {
             const div = document.createElement("div");
             div.className = "company-item";
             div.textContent = companyName;
@@ -716,9 +762,35 @@
       bar.style.width = "100%";
     }
 
-    // Rotation cyclique des écrans (logo + "Services aux Personnes" associés sur toutes les pages)
-    function rotateScreens() {
-      if (isPaused) return;
+    const SCREEN_NAMES = ["Accueil", "Trains SNCB", "STIB"];
+    const BURNIN_OFFSETS = [
+      [0, 0],
+      [1, 0],
+      [0, 1],
+      [-1, 0],
+      [0, -1]
+    ];
+    let burninStep = 0;
+
+    function updateNavigationUI() {
+      const nextIdx = (currentScreen + 1) % 3;
+      const hintEl = document.getElementById("next-screen-hint");
+      if (hintEl) {
+        hintEl.innerHTML = `Prochain écran : <strong>${SCREEN_NAMES[nextIdx]}</strong>`;
+      }
+    }
+
+    function applyBurninProtection() {
+      burninStep = (burninStep + 1) % BURNIN_OFFSETS.length;
+      const [dx, dy] = BURNIN_OFFSETS[burninStep];
+      const container = document.querySelector(".container");
+      if (container) {
+        container.classList.add("burnin-shift");
+        container.style.transform = `translate(${dx}px, ${dy}px)`;
+      }
+    }
+
+    function showScreen(targetIndex) {
       const screenWelcome = document.getElementById("screen-welcome");
       const screenTrains = document.getElementById("screen-trains");
       const screenStib = document.getElementById("screen-stib");
@@ -726,13 +798,14 @@
       const topBrandTitle = document.getElementById("top-brand-title");
       const bodyTag = document.body;
 
-      currentScreen = (currentScreen + 1) % 3;
+      currentScreen = ((targetIndex % 3) + 3) % 3;
 
       screenWelcome.style.display = "none";
       screenTrains.style.display = "none";
       screenStib.style.display = "none";
 
-      bodyTag.className = `bg-screen-${currentScreen}`;
+      const isNight = bodyTag.classList.contains("night-dim");
+      bodyTag.className = `bg-screen-${currentScreen}${isNight ? " night-dim" : ""}`;
 
       siteLogo.style.display = "block";
       topBrandTitle.style.display = "inline-block";
@@ -748,7 +821,15 @@
         fetchStibCombined();
       }
 
+      applyBurninProtection();
+      updateNavigationUI();
       restartProgressBar();
+    }
+
+    // Rotation cyclique des écrans (logo + "Services aux Personnes" associés sur toutes les pages)
+    function rotateScreens() {
+      if (isPaused) return;
+      showScreen(currentScreen + 1);
     }
 
     let isPaused = false;
@@ -797,6 +878,7 @@
     fetchCompany();
     fetchTrains();
     fetchStibCombined();
+    updateNavigationUI();
     restartProgressBar();
 
     // Timers
