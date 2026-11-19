@@ -28,15 +28,15 @@
     body.bg-screen-2 { background-color: #0c182c; } /* Écran 3 (STIB) : Bleu marin / nuit douce */
 
     .container {
-      width: 95%;
-      max-width: 1200px;
+      width: 98%;
+      max-width: 1450px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
     .logo {
-      max-width: 100px;
-      max-height: 100px;
+      max-width: 95px;
+      max-height: 95px;
       margin-bottom: 1rem;
       object-fit: contain;
     }
@@ -49,6 +49,20 @@
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(10px);
     }
+
+    /* Cartes agrandies pour les pages 2 (SNCB) et 3 (STIB) */
+    .card-transport {
+      min-height: 76vh;
+      padding: 2.2rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card-transport h2 {
+      font-size: 2.1rem;
+      margin-bottom: 1.2rem;
+    }
+
     h2 {
       font-size: 1.6rem;
       color: #94a3b8;
@@ -86,26 +100,27 @@
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
     }
 
-    /* Tableaux optimisés pour maximiser la vue sur 1 seule page */
+    /* Tableaux agrandis pour occuper l'espace sur les écrans 2 et 3 */
     .info-table {
       width: 100%;
+      height: 100%;
       border-collapse: collapse;
-      margin-top: 0.2rem;
+      margin-top: 0.4rem;
       text-align: left;
-      font-size: 1.3rem;
+      font-size: 1.85rem;
     }
     .info-table th {
       color: #94a3b8;
-      font-weight: 400;
-      font-size: 0.95rem;
+      font-weight: 500;
+      font-size: 1.2rem;
       text-transform: uppercase;
       letter-spacing: 1.5px;
-      padding-bottom: 0.6rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 0.9rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     }
     .info-table td {
-      padding: 0.65rem 0.5rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 1.15rem 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     }
     .info-table tr:last-child td {
       border-bottom: none;
@@ -114,39 +129,40 @@
     .col-time {
       font-weight: 700;
       color: #38bdf8;
-      width: 18%;
+      width: 20%;
     }
     .col-dest {
       font-weight: 600;
-      width: 55%;
+      width: 52%;
     }
     .col-badge {
       text-align: center;
-      width: 15%;
+      width: 16%;
     }
     
     .train-delay {
       color: #f87171;
-      font-size: 1.1rem;
+      font-size: 1.45rem;
       font-weight: 600;
-      margin-left: 6px;
+      margin-left: 8px;
     }
 
-    /* Badges officiels STIB & Quai SNCB */
-    .badge-metro-1 { background: #eab308; color: #000; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 700; font-size: 1rem; display: inline-block; }
-    .badge-metro-2 { background: #e11d48; color: #fff; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 700; font-size: 1rem; display: inline-block; }
-    .badge-metro-5 { background: #f97316; color: #fff; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 700; font-size: 1rem; display: inline-block; }
-    .badge-metro-6 { background: #0284c7; color: #fff; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 700; font-size: 1rem; display: inline-block; }
-    .badge-bus     { background: #059669; color: #fff; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 700; font-size: 1rem; display: inline-block; }
+    /* Badges officiels STIB & Quai SNCB agrandis */
+    .badge-metro-1 { background: #eab308; color: #000; padding: 0.3rem 0.85rem; border-radius: 8px; font-weight: 700; font-size: 1.5rem; display: inline-block; }
+    .badge-metro-2 { background: #e11d48; color: #fff; padding: 0.3rem 0.85rem; border-radius: 8px; font-weight: 700; font-size: 1.5rem; display: inline-block; }
+    .badge-metro-5 { background: #f97316; color: #fff; padding: 0.3rem 0.85rem; border-radius: 8px; font-weight: 700; font-size: 1.5rem; display: inline-block; }
+    .badge-metro-6 { background: #0284c7; color: #fff; padding: 0.3rem 0.85rem; border-radius: 8px; font-weight: 700; font-size: 1.5rem; display: inline-block; }
+    .badge-bus     { background: #059669; color: #fff; padding: 0.3rem 0.85rem; border-radius: 8px; font-weight: 700; font-size: 1.5rem; display: inline-block; }
     
-    .badge-default { background: rgba(255, 255, 255, 0.15); color: #fff; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 700; font-size: 1rem; display: inline-block; }
+    .badge-default { background: rgba(255, 255, 255, 0.15); color: #fff; padding: 0.3rem 0.8rem; border-radius: 8px; font-weight: 700; font-size: 1.4rem; display: inline-block; }
     .platform-pill {
       background: rgba(56, 189, 248, 0.15);
       color: #38bdf8;
-      border-radius: 8px;
-      padding: 0.2rem 0.5rem;
+      border-radius: 10px;
+      padding: 0.35rem 0.85rem;
       display: inline-block;
       font-weight: 700;
+      font-size: 1.6rem;
     }
   </style>
 </head>
@@ -171,7 +187,7 @@
     </div>
 
     <!-- PAGE 2 : HORAIRES SNCB (Bruxelles-Nord) -->
-    <div id="screen-trains" class="card" style="display: none;">
+    <div id="screen-trains" class="card card-transport" style="display: none;">
       <h2>Gare Bruxelles-Nord — Départs</h2>
       <table class="info-table">
         <thead>
@@ -189,12 +205,12 @@
     </div>
 
     <!-- PAGE 3 : STIB (Yser + Sainte-Catherine combinés) -->
-    <div id="screen-stib" class="card" style="display: none;">
+    <div id="screen-stib" class="card card-transport" style="display: none;">
       <h2>STIB — Yser & Sainte-Catherine</h2>
       <table class="info-table">
         <thead>
           <tr>
-            <th>Ligne</th>
+            <th style="text-align: center;">Ligne</th>
             <th>Destination</th>
             <th style="text-align: right;">Passage</th>
           </tr>
@@ -208,153 +224,4 @@
 
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbweZ9OmSVqYC3b9Ee9dIwjKNL7V-hUqu9ynCVodBSC0KZH7zHc2DwviqGpxOmgq2tG_/exec";
-    const IRAIL_URL = "https://api.irail.be/liveboard/?id=BE.NMBS.008812005&format=json&lang=fr";
-    
-    let currentScreen = 0; // 0: Accueil, 1: Trains SNCB, 2: STIB Combiné
-
-    // 1. Agenda Visiteurs (création d'un encadré distinct par occurrence)
-    async function fetchCompany() {
-      try {
-        const response = await fetch(SCRIPT_URL);
-        const data = await response.json();
-        const container = document.getElementById("company-container");
-        const welcomeCard = document.getElementById("welcome-card");
-        const standbyCard = document.getElementById("standby-card");
-        
-        if (data && data.companies && data.companies.length > 0) {
-          container.innerHTML = "";
-          data.companies.forEach(companyName => {
-            const div = document.createElement("div");
-            div.className = "company-item";
-            div.innerText = companyName;
-            container.appendChild(div);
-          });
-          welcomeCard.style.display = "block";
-          standbyCard.style.display = "none";
-        } else {
-          welcomeCard.style.display = "none";
-          standbyCard.style.display = "block";
-        }
-      } catch (err) {
-        console.error("Erreur agenda :", err);
-      }
-    }
-
-    // 2. Trains Bruxelles-Nord (iRail)
-    async function fetchTrains() {
-      try {
-        const response = await fetch(IRAIL_URL);
-        const data = await response.json();
-        const departures = data.departures.departure.slice(0, 6);
-        const tbody = document.getElementById("train-list");
-        tbody.innerHTML = "";
-        
-        departures.forEach(train => {
-          const date = new Date(parseInt(train.time) * 1000);
-          const timeStr = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-          const delayMin = Math.round(parseInt(train.delay) / 60);
-          const delayHtml = delayMin > 0 ? `<span class="train-delay">+${delayMin}'</span>` : "";
-          const vehicleParts = train.vehicle.split('.');
-          const trainName = vehicleParts[vehicleParts.length - 1];
-          const platform = train.platform || "-";
-
-          tbody.innerHTML += `
-            <tr>
-              <td class="col-time">${timeStr}${delayHtml}</td>
-              <td class="col-dest">${train.station}</td>
-              <td><span class="badge-default">${trainName}</span></td>
-              <td style="text-align: right;"><span class="platform-pill">${platform}</span></td>
-            </tr>`;
-        });
-      } catch (err) {
-        console.error("Erreur SNCB :", err);
-      }
-    }
-
-    // 3. STIB Combiné (Yser & Sainte-Catherine)
-    async function fetchStibCombined() {
-      const tbody = document.getElementById("stib-combined-list");
-      const now = new Date();
-
-      const stibItems = [
-        { line: "6", dest: "Roi Baudouin (Yser)", mins: 2 },
-        { line: "1", dest: "Stockel (St-Catherine)", mins: 4 },
-        { line: "2", dest: "Simonis (Yser)", mins: 6 },
-        { line: "5", dest: "Erasme (St-Catherine)", mins: 8 },
-        { line: "46", dest: "Moortebeek (Bus Yser)", mins: 10 },
-        { line: "1", dest: "Gare de l'Ouest (St-Cat.)", mins: 12 }
-      ];
-
-      tbody.innerHTML = "";
-      stibItems.forEach(item => {
-        let badgeClass = "badge-default";
-        if (item.line === "1") badgeClass = "badge-metro-1";
-        else if (item.line === "2") badgeClass = "badge-metro-2";
-        else if (item.line === "5") badgeClass = "badge-metro-5";
-        else if (item.line === "6") badgeClass = "badge-metro-6";
-        else badgeClass = "badge-bus";
-
-        const targetTime = new Date(now.getTime() + item.mins * 60000);
-        const timeStr = `${String(targetTime.getHours()).padStart(2, '0')}:${String(targetTime.getMinutes()).padStart(2, '0')}`;
-        
-        tbody.innerHTML += `
-          <tr>
-            <td class="col-badge"><span class="${badgeClass}">${item.line}</span></td>
-            <td class="col-dest">${item.dest}</td>
-            <td style="text-align: right;" class="col-time">${timeStr}</td>
-          </tr>`;
-      });
-    }
-
-    // Rotation cyclique des écrans et mise à jour de la classe de couleur de fond (bleu spécifique par page)
-    function rotateScreens() {
-      const screenWelcome = document.getElementById("screen-welcome");
-      const screenTrains = document.getElementById("screen-trains");
-      const screenStib = document.getElementById("screen-stib");
-      const bodyTag = document.body;
-
-      currentScreen = (currentScreen + 1) % 3;
-
-      screenWelcome.style.display = "none";
-      screenTrains.style.display = "none";
-      screenStib.style.display = "none";
-      
-      // Change la nuance de bleu du fond selon l'écran actif
-      bodyTag.className = `bg-screen-${currentScreen}`;
-
-      if (currentScreen === 0) {
-        screenWelcome.style.display = "block";
-        fetchCompany();
-      } else if (currentScreen === 1) {
-        screenTrains.style.display = "block";
-        fetchTrains();
-      } else if (currentScreen === 2) {
-        screenStib.style.display = "block";
-        fetchStibCombined();
-      }
-    }
-
-    // Bascule en plein écran au clic/tap sur la tablette pour masquer la barre d'adresse
-    document.addEventListener("click", () => {
-      if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch((err) => {
-          console.warn("Plein écran non disponible :", err);
-        });
-      }
-    });
-
-    // Initialisation au chargement
-    fetchCompany();
-    fetchTrains();
-    fetchStibCombined();
-
-    // Actualisation des données en arrière-plan
-    setInterval(fetchCompany, 10000);
-    setInterval(fetchTrains, 10000);
-    setInterval(fetchStibCombined, 10000);
-
-    // Rotation toutes les 12 secondes (12000 ms)
-    setInterval(rotateScreens, 12000);
-  </script>
-</body>
-</html>
+    const IRAIL_URL = "
