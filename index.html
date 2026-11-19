@@ -334,6 +334,15 @@
       }
     }
 
+    // Bascule en plein écran au clic/tap sur la tablette pour masquer la barre d'adresse
+    document.addEventListener("click", () => {
+      if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch((err) => {
+          console.warn("Plein écran non disponible :", err);
+        });
+      }
+    });
+
     // Initialisation au chargement
     fetchCompany();
     fetchTrains();
