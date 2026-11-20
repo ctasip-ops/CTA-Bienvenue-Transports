@@ -164,7 +164,7 @@
       justify-content: flex-start;
     }
 
-    /* Carte maximisée et soignée pour la page 4 (Carte interactive Partenaires) */
+    /* Carte maximisée et soignée pour la page 3 (Carte interactive Partenaires) */
     .card-map {
       width: 100%;
       flex: 1;
@@ -305,7 +305,7 @@
       white-space: nowrap;
     }
 
-    /* Page 5 : Formalités d'accueil */
+    /* Formalités d'accueil */
     .card-checkin {
       width: 100%;
       flex: 1;
@@ -709,48 +709,34 @@
       </div>
     </div>
 
-    <!-- PAGE 2 : HORAIRES SNCB -->
-    <div id="screen-trains" class="card card-transport" style="display: none;">
-      <div class="card-header-row">
-        <h2>Gare Bruxelles-Nord — Départs</h2>
-        <span class="walk-badge">🚶 ~12 min à pied</span>
+    <!-- PAGE 2 : FORMALITÉS D'ACCUEIL -->
+    <div id="screen-checkin" class="card card-checkin" style="display: none;">
+      <div class="card-header-row" style="width: 100%; justify-content: center;">
+        <h2>Formalités d'accueil</h2>
       </div>
-      <table class="info-table trains-table">
-        <thead>
-          <tr>
-            <th>Heure</th>
-            <th>Destination</th>
-            <th>Type</th>
-            <th style="text-align: right;">Quai</th>
-          </tr>
-        </thead>
-        <tbody id="train-list">
-          <tr><td colspan="4" style="text-align:center; color:#94a3b8;">Chargement des trains...</td></tr>
-        </tbody>
-      </table>
+
+      <div class="checkin-box">
+        <p class="checkin-mention">Merci de préparer votre carte d'identité et de signer votre présence à l'accueil</p>
+
+        <div class="checkin-steps">
+          <div class="checkin-step-card">
+            <span class="checkin-step-icon" aria-hidden="true">🪪</span>
+            <span class="checkin-step-label">Carte d'identité</span>
+          </div>
+          <div class="checkin-step-card">
+            <span class="checkin-step-icon" aria-hidden="true">✍️</span>
+            <span class="checkin-step-label">Signature à l'accueil</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="welcome-notice" style="width: 100%;">
+        <span>Merci de patienter à l'accueil. En cas d'absence, utiliser la sonnette</span>
+        <span class="bell-arrow" aria-label="Flèche vers la droite indiquant la sonnette">➔</span>
+      </p>
     </div>
 
-    <!-- PAGE 3 : STIB -->
-    <div id="screen-stib" class="card card-transport" style="display: none;">
-      <div class="card-header-row">
-        <h2>STIB — Yser & Sainte-Catherine</h2>
-        <span class="walk-badge">🚶 Yser 3 min • Ste-Catherine 6 min</span>
-      </div>
-      <table class="info-table">
-        <thead>
-          <tr>
-            <th style="text-align: center;">Ligne</th>
-            <th>Destination</th>
-            <th style="text-align: right;">Passage</th>
-          </tr>
-        </thead>
-        <tbody id="stib-combined-list">
-          <tr><td colspan="3" style="text-align:center; color:#94a3b8;">Chargement des transports STIB...</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- PAGE 4 : CARTE INTERACTIVE — NOS PARTENAIRES ACTUELS -->
+    <!-- PAGE 3 : CARTE INTERACTIVE — NOS PARTENAIRES ACTUELS -->
     <div id="screen-partners" class="card card-map" style="display: none;">
       <div class="map-top-bar">
         <div class="map-caption">
@@ -781,35 +767,49 @@
       </div>
     </div>
 
-    <!-- PAGE 5 : FORMALITÉS D'ACCUEIL -->
-    <div id="screen-checkin" class="card card-checkin" style="display: none;">
-      <div class="card-header-row" style="width: 100%; justify-content: center;">
-        <h2>Formalités d'accueil</h2>
+    <!-- PAGE 4 : STIB -->
+    <div id="screen-stib" class="card card-transport" style="display: none;">
+      <div class="card-header-row">
+        <h2>STIB — Yser & Sainte-Catherine</h2>
+        <span class="walk-badge">🚶 Yser 3 min • Ste-Catherine 6 min</span>
       </div>
+      <table class="info-table">
+        <thead>
+          <tr>
+            <th style="text-align: center;">Ligne</th>
+            <th>Destination</th>
+            <th style="text-align: right;">Passage</th>
+          </tr>
+        </thead>
+        <tbody id="stib-combined-list">
+          <tr><td colspan="3" style="text-align:center; color:#94a3b8;">Chargement des transports STIB...</td></tr>
+        </tbody>
+      </table>
+    </div>
 
-      <div class="checkin-box">
-        <p class="checkin-mention">Merci de préparer votre carte d'identité et de signer votre présence à l'accueil</p>
-
-        <div class="checkin-steps">
-          <div class="checkin-step-card">
-            <span class="checkin-step-icon" aria-hidden="true">🪪</span>
-            <span class="checkin-step-label">Carte d'identité</span>
-          </div>
-          <div class="checkin-step-card">
-            <span class="checkin-step-icon" aria-hidden="true">✍️</span>
-            <span class="checkin-step-label">Signature à l'accueil</span>
-          </div>
-        </div>
+    <!-- PAGE 5 : HORAIRES SNCB -->
+    <div id="screen-trains" class="card card-transport" style="display: none;">
+      <div class="card-header-row">
+        <h2>Gare Bruxelles-Nord — Départs</h2>
+        <span class="walk-badge">🚶 ~12 min à pied</span>
       </div>
-
-      <p class="welcome-notice" style="width: 100%;">
-        <span>Merci de patienter à l'accueil. En cas d'absence, utiliser la sonnette</span>
-        <span class="bell-arrow" aria-label="Flèche vers la droite indiquant la sonnette">➔</span>
-      </p>
+      <table class="info-table trains-table">
+        <thead>
+          <tr>
+            <th>Heure</th>
+            <th>Destination</th>
+            <th>Type</th>
+            <th style="text-align: right;">Quai</th>
+          </tr>
+        </thead>
+        <tbody id="train-list">
+          <tr><td colspan="4" style="text-align:center; color:#94a3b8;">Chargement des trains...</td></tr>
+        </tbody>
+      </table>
     </div>
 
     <div class="bottom-nav" id="bottom-nav">
-      <div class="next-screen-hint" id="next-screen-hint">Prochain écran : <strong>Trains SNCB</strong></div>
+      <div class="next-screen-hint" id="next-screen-hint">Prochain écran : <strong>Formalités d'accueil</strong></div>
     </div>
   </div>
 
@@ -1045,7 +1045,7 @@
       bar.style.width = "100%";
     }
 
-    const SCREEN_NAMES = ["Accueil", "Trains SNCB", "STIB", "Partenaires", "Formalités d'accueil"];
+    const SCREEN_NAMES = ["Accueil", "Formalités d'accueil", "Partenaires", "STIB", "Trains SNCB"];
     const BURNIN_OFFSETS = [
       [0, 0],
       [1, 0],
@@ -1075,10 +1075,10 @@
 
     function showScreen(targetIndex) {
       const screenWelcome = document.getElementById("screen-welcome");
-      const screenTrains = document.getElementById("screen-trains");
-      const screenStib = document.getElementById("screen-stib");
-      const screenPartners = document.getElementById("screen-partners");
       const screenCheckin = document.getElementById("screen-checkin");
+      const screenPartners = document.getElementById("screen-partners");
+      const screenStib = document.getElementById("screen-stib");
+      const screenTrains = document.getElementById("screen-trains");
       const siteLogo = document.getElementById("site-logo");
       const topBrandTitle = document.getElementById("top-brand-title");
       const bodyTag = document.body;
@@ -1086,10 +1086,10 @@
       currentScreen = ((targetIndex % TOTAL_SCREENS) + TOTAL_SCREENS) % TOTAL_SCREENS;
 
       screenWelcome.style.display = "none";
-      screenTrains.style.display = "none";
-      screenStib.style.display = "none";
-      screenPartners.style.display = "none";
       screenCheckin.style.display = "none";
+      screenPartners.style.display = "none";
+      screenStib.style.display = "none";
+      screenTrains.style.display = "none";
 
       const isNight = bodyTag.classList.contains("night-dim");
       bodyTag.className = `bg-screen-${currentScreen}${isNight ? " night-dim" : ""}`;
@@ -1101,15 +1101,15 @@
         screenWelcome.style.display = "flex";
         fetchCompany();
       } else if (currentScreen === 1) {
-        screenTrains.style.display = "flex";
-        fetchTrains();
+        screenCheckin.style.display = "flex";
       } else if (currentScreen === 2) {
+        screenPartners.style.display = "flex";
+      } else if (currentScreen === 3) {
         screenStib.style.display = "flex";
         fetchStibCombined();
-      } else if (currentScreen === 3) {
-        screenPartners.style.display = "flex";
       } else if (currentScreen === 4) {
-        screenCheckin.style.display = "flex";
+        screenTrains.style.display = "flex";
+        fetchTrains();
       }
 
       applyBurninProtection();
