@@ -356,15 +356,6 @@
       transition: filter 0.6s ease, opacity 0.35s ease;
     }
 
-    @media screen and (max-width: 1024px) {
-      .map-frame-wrapper iframe {
-        width: 100%;
-        height: 100%;
-        -moz-transform: scale(1);
-        transform: scale(1);
-      }
-    }
-
     body.night-dim .map-frame-wrapper iframe {
       filter: brightness(0.82) contrast(1.05) saturate(0.88);
     }
@@ -885,8 +876,8 @@
       <div class="map-frame-wrapper">
         <iframe
           id="partners-map-iframe"
-          data-base-src="https://www.google.com/maps/d/u/0/embed?mid=1wokoEyQPtC37Yj3YDKKC239X_rRFcCU&ll=50.5039,4.4699&z=7"
-          src="about:blank"
+          data-base-src="https://www.google.com/maps/d/u/0/embed?mid=1wokoEyQPtC37Yj3YDKKC239X_rRFcCU"
+          src="https://www.google.com/maps/d/u/0/embed?mid=1wokoEyQPtC37Yj3YDKKC239X_rRFcCU"
           title="Carte interactive — Nos partenaires actuels"
           loading="eager"
           referrerpolicy="no-referrer-when-downgrade">
@@ -1261,7 +1252,6 @@
         screenCheckin.style.display = "flex";
       } else if (currentScreen === 3) {
         screenPartners.style.display = "flex";
-        resetMapToBelgium();
       } else if (currentScreen === 4) {
         screenStib.style.display = "flex";
         fetchStibCombined();
@@ -1297,35 +1287,18 @@
 
     const mapIframe = document.getElementById("partners-map-iframe");
     const mapOverlay = document.getElementById("map-status-overlay");
-    let mapLoaded = false;
-    let mapTimeoutId = null;
-
     function resetMapToBelgium() {
       if (!mapIframe) return;
       const baseSrc = mapIframe.getAttribute("data-base-src") || mapIframe.src;
       const separator = baseSrc.includes("?") ? "&" : "?";
-      mapLoaded = false;
-      if (mapOverlay) {
-        mapOverlay.textContent = "Chargement de la carte interactive...";
-        mapOverlay.style.display = "flex";
-        mapOverlay.classList.remove("is-hidden");
-      }
-      if (mapTimeoutId) clearTimeout(mapTimeoutId);
-      mapTimeoutId = setTimeout(() => {
-        if (!mapLoaded && mapOverlay) {
-          mapOverlay.textContent = "Carte indisponible ou chargement lent — vérifiez la connexion réseau.";
-        }
-      }, 8000);
-      requestAnimationFrame(() => {
-        mapIframe.src = `${baseSrc}${separator}_reload=${Date.now()}`;
-      });
+      mapIframe.src = `${baseSrc}${separator}_reload=${Date.now()}`;
     }
 
     if (mapIframe && mapOverlay) {
+      let mapLoaded = false;
+
       function hideMapOverlay() {
-        if (mapIframe.src === "about:blank" || !mapIframe.src.includes("google.com/maps")) return;
         mapLoaded = true;
-        if (mapTimeoutId) clearTimeout(mapTimeoutId);
         mapOverlay.classList.add("is-hidden");
         setTimeout(() => {
           mapOverlay.style.display = "none";
@@ -1333,6 +1306,13 @@
       }
 
       mapIframe.addEventListener("load", hideMapOverlay);
+      resetMapToBelgium();
+
+      setTimeout(() => {
+        if (!mapLoaded) {
+          mapOverlay.textContent = "Carte indisponible ou chargement lent — vérifiez la connexion réseau.";
+        }
+      }, 8000);
     }
 
     function enterFirefoxFullscreen() {
