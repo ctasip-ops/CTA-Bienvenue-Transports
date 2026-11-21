@@ -356,6 +356,15 @@
       transition: filter 0.6s ease, opacity 0.35s ease;
     }
 
+    @media screen and (max-width: 1024px) {
+      .map-frame-wrapper iframe {
+        width: 100%;
+        height: 100%;
+        -moz-transform: scale(1);
+        transform: scale(1);
+      }
+    }
+
     body.night-dim .map-frame-wrapper iframe {
       filter: brightness(0.82) contrast(1.05) saturate(0.88);
     }
@@ -841,7 +850,7 @@
       </div>
 
       <div class="checkin-box">
-        <p class="checkin-mention">Merci de préparer votre carte d'identité et de signer votre présence à l'accueil</p>
+        <p class="checkin-mention">Merci de préparer ta carte d'identité et de signer ta présence à l'accueil</p>
 
         <div class="checkin-steps">
           <div class="checkin-step-card">
@@ -876,8 +885,8 @@
       <div class="map-frame-wrapper">
         <iframe
           id="partners-map-iframe"
-          data-base-src="https://www.google.com/maps/d/u/0/embed?mid=1wokoEyQPtC37Yj3YDKKC239X_rRFcCU"
-          src="https://www.google.com/maps/d/u/0/embed?mid=1wokoEyQPtC37Yj3YDKKC239X_rRFcCU"
+          data-base-src="https://www.google.com/maps/d/u/0/embed?mid=1wokoEyQPtC37Yj3YDKKC239X_rRFcCU&ll=50.5039,4.4699&z=7"
+          src="about:blank"
           title="Carte interactive — Nos partenaires actuels"
           loading="eager"
           referrerpolicy="no-referrer-when-downgrade">
@@ -937,11 +946,11 @@
     <div class="bottom-nav" id="bottom-nav">
       <span class="screen-counter-pill" id="screen-counter">Écran 1 / 6</span>
       <div class="screen-dots" id="screen-dots" aria-hidden="true">
-        <span class="screen-dot active"></span>
+        <span class="screen-dot active" data-index="0"></span>
         <span class="screen-dot"></span>
+        <span class="screen-dot" data-index="1"></span>
         <span class="screen-dot"></span>
-        <span class="screen-dot"></span>
-        <span class="screen-dot"></span>
+        <span class="screen-dot" data-index="2"></span>
         <span class="screen-dot"></span>
       </div>
       <div class="next-screen-hint" id="next-screen-hint">Prochain écran : <strong>Accueil &amp; Agenda</strong></div>
@@ -960,12 +969,15 @@
     let currentScreen = 0;
     let lastSyncTime = null;
     let wakeLock = null;
+    let rotationTimer = null;
 
     function updateSyncLabel() {
       if (!lastSyncTime) return;
+      const el = document.getElementById("sync-status");
+      if (!el) return;
       const hh = String(lastSyncTime.getHours()).padStart(2, '0');
       const mm = String(lastSyncTime.getMinutes()).padStart(2, '0');
-      document.getElementById("sync-status").textContent = `Màj ${hh}:${mm}`;
+      el.textContent = `Màj ${hh}:${mm}`;
     }
 
     function updateNightMode(now) {
@@ -978,14 +990,17 @@
       const now = new Date();
       const hh = String(now.getHours()).padStart(2, '0');
       const mm = String(now.getMinutes()).padStart(2, '0');
-      document.getElementById("live-clock").textContent = `${hh}:${mm}`;
-
-      const dateStr = now.toLocaleDateString("fr-BE", {
-        weekday: "long",
-        day: "numeric",
-        month: "long"
-      });
-      document.getElementById("live-date").textContent = dateStr;
+      const clockEl = document.getElementById("live-clock");
+      const dateEl = document.getElementById("live-date");
+      if (clockEl) clockEl.textContent = `${hh}:${mm}`;
+      if (dateEl) {
+        const dateStr = now.toLocaleDateString("fr-BE", {
+          weekday: "long",
+          day: "numeric",
+          month: "long"
+        });
+        dateEl.textContent = dateStr;
+      }
       updateNightMode(now);
     }
 
@@ -1006,9 +1021,12 @@
         if (data && data.current) {
           const temp = Math.round(data.current.temperature_2m);
           const icon = weatherCodeToIcon(data.current.weather_code);
-          document.getElementById("weather-icon").textContent = icon;
-          document.getElementById("weather-temp").textContent = `${temp}°C`;
-          document.getElementById("weather-pill").style.display = "flex";
+          const iconEl = document.getElementById("weather-icon");
+          const tempEl = document.getElementById("weather-temp");
+          const pillEl = document.getElementById("weather-pill");
+          if (iconEl) iconEl.textContent = icon;
+          if (tempEl) tempEl.textContent = `${temp}°C`;
+          if (pillEl) pillEl.style.display = "flex";
         }
       } catch (err) {
         console.warn("Météo indisponible :", err);
@@ -1016,14 +1034,16 @@
     }
 
     async function fetchCompany() {
+      const container = document.getElementById("company-container");
+      const welcomeCard = document.getElementById("welcome-card");
+      const standbyCard = document.getElementById("standby-card");
+      if (!container || !welcomeCard || !standbyCard) return;
+
       try {
         const response = await fetch(SCRIPT_URL);
         const data = await response.json();
-        const container = document.getElementById("company-container");
-        const welcomeCard = document.getElementById("welcome-card");
-        const standbyCard = document.getElementById("standby-card");
 
-        if (data && data.companies && data.companies.length > 0) {
+        if (data && Array.isArray(data.companies) && data.companies.length > 0) {
           container.innerHTML = "";
           data.companies.slice(0, 5).forEach(companyName => {
             const div = document.createElement("div");
@@ -1042,15 +1062,19 @@
         updateSyncLabel();
       } catch (err) {
         console.error("Erreur agenda :", err);
+        welcomeCard.style.display = "none";
+        standbyCard.style.display = "flex";
       }
     }
 
     async function fetchTrains() {
+      const tbody = document.getElementById("train-list");
+      if (!tbody) return;
+
       try {
         const response = await fetch(IRAIL_URL);
         const data = await response.json();
-        const departures = data.departures.departure.slice(0, 6);
-        const tbody = document.getElementById("train-list");
+        const departures = (data.departures && data.departures.departure ? data.departures.departure : []).slice(0, 6);
         const frag = document.createDocumentFragment();
 
         departures.forEach(train => {
@@ -1059,8 +1083,8 @@
           const delayMin = Math.round(parseInt(train.delay || "0", 10) / 60);
           const isCanceled = train.canceled === "1" || train.canceled === 1;
 
-          const vehicleParts = train.vehicle.split('.');
-          const trainName = vehicleParts[vehicleParts.length - 1];
+          const vehicleParts = (train.vehicle || "").split('.');
+          const trainName = vehicleParts[vehicleParts.length - 1] || "-";
           const platform = train.platform || "-";
 
           const tr = document.createElement("tr");
@@ -1084,7 +1108,7 @@
 
           const tdDest = document.createElement("td");
           tdDest.className = "col-dest";
-          tdDest.textContent = train.station;
+          tdDest.textContent = train.station || "-";
 
           const tdType = document.createElement("td");
           const typeBadge = document.createElement("span");
@@ -1109,8 +1133,7 @@
         updateSyncLabel();
       } catch (err) {
         console.error("Erreur SNCB :", err);
-        const tbody = document.getElementById("train-list");
-        if (tbody && tbody.children.length === 0) {
+        if (tbody.children.length === 0) {
           tbody.innerHTML = '<tr><td colspan="4" class="api-fallback">Mise à jour des horaires SNCB en cours...</td></tr>';
         }
       }
@@ -1118,6 +1141,7 @@
 
     async function fetchStibCombined() {
       const tbody = document.getElementById("stib-combined-list");
+      if (!tbody) return;
       const now = new Date();
 
       const stibItems = [
@@ -1173,11 +1197,17 @@
 
     function restartProgressBar() {
       const bar = document.getElementById("progress-fill");
+      if (!bar) return;
       bar.style.transition = "none";
       bar.style.width = "0%";
       void bar.offsetWidth;
       bar.style.transition = `width ${ROTATION_MS}ms linear`;
       bar.style.width = "100%";
+
+      if (rotationTimer) clearTimeout(rotationTimer);
+      rotationTimer = setTimeout(() => {
+        rotateScreens();
+      }, ROTATION_MS);
     }
 
     const SCREEN_NAMES = ["Bienvenue au CTA", "Accueil & Agenda", "Formalités d'accueil", "Partenaires", "STIB", "Trains SNCB"];
@@ -1230,32 +1260,33 @@
 
       currentScreen = ((targetIndex % TOTAL_SCREENS) + TOTAL_SCREENS) % TOTAL_SCREENS;
 
-      screenTeam.style.display = "none";
-      screenWelcome.style.display = "none";
-      screenCheckin.style.display = "none";
-      screenPartners.style.display = "none";
-      screenStib.style.display = "none";
-      screenTrains.style.display = "none";
+      if (screenTeam) screenTeam.style.display = "none";
+      if (screenWelcome) screenWelcome.style.display = "none";
+      if (screenCheckin) screenCheckin.style.display = "none";
+      if (screenPartners) screenPartners.style.display = "none";
+      if (screenStib) screenStib.style.display = "none";
+      if (screenTrains) screenTrains.style.display = "none";
 
       const isNight = bodyTag.classList.contains("night-dim");
       bodyTag.className = `bg-screen-${currentScreen}${isNight ? " night-dim" : ""}`;
 
-      siteLogo.style.display = "block";
-      topBrandTitle.style.display = "inline-block";
+      if (siteLogo) siteLogo.style.display = "block";
+      if (topBrandTitle) topBrandTitle.style.display = "inline-block";
 
-      if (currentScreen === 0) {
+      if (currentScreen === 0 && screenTeam) {
         screenTeam.style.display = "flex";
-      } else if (currentScreen === 1) {
+      } else if (currentScreen === 1 && screenWelcome) {
         screenWelcome.style.display = "flex";
         fetchCompany();
-      } else if (currentScreen === 2) {
+      } else if (currentScreen === 2 && screenCheckin) {
         screenCheckin.style.display = "flex";
-      } else if (currentScreen === 3) {
+      } else if (currentScreen === 3 && screenPartners) {
         screenPartners.style.display = "flex";
-      } else if (currentScreen === 4) {
+        resetMapToBelgium();
+      } else if (currentScreen === 4 && screenStib) {
         screenStib.style.display = "flex";
         fetchStibCombined();
-      } else if (currentScreen === 5) {
+      } else if (currentScreen === 5 && screenTrains) {
         screenTrains.style.display = "flex";
         fetchTrains();
       }
@@ -1287,18 +1318,35 @@
 
     const mapIframe = document.getElementById("partners-map-iframe");
     const mapOverlay = document.getElementById("map-status-overlay");
+    let mapLoaded = false;
+    let mapTimeoutId = null;
+
     function resetMapToBelgium() {
       if (!mapIframe) return;
       const baseSrc = mapIframe.getAttribute("data-base-src") || mapIframe.src;
       const separator = baseSrc.includes("?") ? "&" : "?";
-      mapIframe.src = `${baseSrc}${separator}_reload=${Date.now()}`;
+      mapLoaded = false;
+      if (mapOverlay) {
+        mapOverlay.textContent = "Chargement de la carte interactive...";
+        mapOverlay.style.display = "flex";
+        mapOverlay.classList.remove("is-hidden");
+      }
+      if (mapTimeoutId) clearTimeout(mapTimeoutId);
+      mapTimeoutId = setTimeout(() => {
+        if (!mapLoaded && mapOverlay) {
+          mapOverlay.textContent = "Carte indisponible ou chargement lent — vérifiez la connexion réseau.";
+        }
+      }, 8000);
+      requestAnimationFrame(() => {
+        mapIframe.src = `${baseSrc}${separator}_reload=${Date.now()}`;
+      });
     }
 
     if (mapIframe && mapOverlay) {
-      let mapLoaded = false;
-
       function hideMapOverlay() {
+        if (mapIframe.src === "about:blank" || !mapIframe.src.includes("google.com/maps")) return;
         mapLoaded = true;
+        if (mapTimeoutId) clearTimeout(mapTimeoutId);
         mapOverlay.classList.add("is-hidden");
         setTimeout(() => {
           mapOverlay.style.display = "none";
@@ -1306,13 +1354,6 @@
       }
 
       mapIframe.addEventListener("load", hideMapOverlay);
-      resetMapToBelgium();
-
-      setTimeout(() => {
-        if (!mapLoaded) {
-          mapOverlay.textContent = "Carte indisponible ou chargement lent — vérifiez la connexion réseau.";
-        }
-      }, 8000);
     }
 
     function enterFirefoxFullscreen() {
@@ -1331,6 +1372,19 @@
         }
       }
     }
+
+    document.querySelectorAll("#screen-dots .screen-dot").forEach(dot => {
+      dot.addEventListener("click", event => {
+        event.stopPropagation();
+        const idx = parseInt(dot.getAttribute("data-index"), 10);
+        if (!Number.isNaN(idx)) showScreen(idx);
+      });
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "ArrowRight") showScreen(currentScreen + 1);
+      else if (event.key === "ArrowLeft") showScreen(currentScreen - 1);
+    });
 
     document.addEventListener("click", () => {
       enterFirefoxFullscreen();
@@ -1355,7 +1409,6 @@
     setInterval(fetchCompany, 10000);
     setInterval(fetchTrains, 10000);
     setInterval(fetchStibCombined, 10000);
-    setInterval(rotateScreens, ROTATION_MS);
   </script>
 </body>
 </html>
