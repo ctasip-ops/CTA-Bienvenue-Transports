@@ -263,15 +263,16 @@
     }
 
     /* Carte maximisée et soignée pour la page 3 (Carte interactive Partenaires) */
-    width: 100%;
+   .card-map {
+  width: 100%;
   min-width: 0;
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
-  padding: 1.3vh 1.6vw;
+  padding: clamp(12px, 1.4dvh, 20px) clamp(14px, 1.8vw, 26px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 1.1vh;
+  gap: clamp(10px, 1.2dvh, 16px);
   background:
     radial-gradient(circle at top right, rgba(56, 189, 248, 0.12), transparent 42%),
     linear-gradient(180deg, rgba(15, 23, 42, 0.78), rgba(7, 17, 32, 0.92));
@@ -286,10 +287,9 @@
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 10px 12px;
+  gap: 8px 12px;
   flex-shrink: 0;
   min-width: 0;
-  padding: 0 0.2vw;
 }
 
 .map-caption {
@@ -315,27 +315,27 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px 10px;
-  flex-shrink: 0;
+  gap: 8px;
+  min-width: 0;
 }
 
 .map-chip {
   background: rgba(56, 189, 248, 0.13);
   border: 1px solid rgba(56, 189, 248, 0.32);
   color: #e0f2fe;
-  padding: 0.35vh 0.95vw;
+  padding: 5px 12px;
   border-radius: 999px;
-  font-size: clamp(0.88rem, 1.15vw, 1.2rem);
+  font-size: clamp(0.85rem, 1.1vw, 1.15rem);
   font-weight: 600;
   letter-spacing: 0.2px;
-  white-space: nowrap;
+  max-width: 100%;
 }
 
 .map-frame-wrapper {
   width: 100%;
   min-width: 0;
-  flex: 1;
-  min-height: 260px;
+  flex: 1 1 auto;
+  min-height: 280px;
   border-radius: 20px;
   overflow: hidden;
   border: 1px solid rgba(56, 189, 248, 0.32);
@@ -344,7 +344,6 @@
     inset 0 0 0 1px rgba(255, 255, 255, 0.06);
   background: #0f172a;
   position: relative;
-  display: flex;
 }
 
 .map-frame-wrapper iframe {
@@ -354,7 +353,6 @@
   height: 100%;
   border: 0;
   display: block;
-  -moz-transition: filter 0.6s ease, opacity 0.35s ease;
   transition: filter 0.6s ease, opacity 0.35s ease;
 }
 
@@ -368,14 +366,13 @@ body.night-dim .map-frame-wrapper iframe {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 1.5rem;
   text-align: center;
   background: rgba(15, 23, 42, 0.88);
   color: #cbd5e1;
   font-size: clamp(1.05rem, 1.4vw, 1.5rem);
   font-weight: 500;
   pointer-events: none;
-  -moz-transition: opacity 0.3s ease;
   transition: opacity 0.3s ease;
 }
 
@@ -383,79 +380,58 @@ body.night-dim .map-frame-wrapper iframe {
   opacity: 0;
 }
 
-/* Adaptation spécifique tablettes */
+.partners-banner {
+  padding: clamp(10px, 1.1dvh, 16px) clamp(14px, 1.8vw, 24px);
+  background: linear-gradient(90deg, rgba(56, 189, 248, 0.16), rgba(14, 165, 233, 0.08), rgba(56, 189, 248, 0.16));
+  border: 1px solid rgba(56, 189, 248, 0.34);
+  border-radius: 16px;
+  font-size: clamp(1.1rem, 1.6vw, 1.75rem);
+  color: #f8fafc;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  flex-shrink: 0;
+  box-shadow: 0 10px 24px -10px rgba(2, 132, 199, 0.35);
+}
+
+.partners-banner-sub {
+  font-size: clamp(0.9rem, 1.15vw, 1.2rem);
+  font-weight: 600;
+  color: #bae6fd;
+  background: rgba(15, 23, 42, 0.45);
+  border: 1px solid rgba(186, 230, 253, 0.18);
+  padding: 5px 12px;
+  border-radius: 10px;
+  letter-spacing: 0.2px;
+}
+
+/* Tablettes (portrait et paysage jusqu'à 1100px) */
 @media (max-width: 1100px) {
   .card-map {
-    padding: 14px 16px;
+    padding: 12px 14px;
     gap: 10px;
   }
 
-  .map-chip {
-    padding: 5px 12px;
-  }
-
   .map-frame-wrapper {
+    min-height: 320px;
     border-radius: 16px;
   }
 }
 
-@media (max-width: 900px) and (orientation: portrait) {
+/* Tablette en mode portrait : privilégier la hauteur de carte */
+@media (orientation: portrait) and (max-width: 1024px) {
   .map-frame-wrapper {
-    min-height: 340px;
+    min-height: 420px;
+  }
+
+  .partners-banner {
+    gap: 8px 12px;
   }
 }
-    body.night-dim .map-frame-wrapper iframe {
-      filter: brightness(0.82) contrast(1.05) saturate(0.88);
-    }
-
-    .map-status-overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      background: rgba(15, 23, 42, 0.88);
-      color: #cbd5e1;
-      font-size: clamp(1.1rem, 1.5vw, 1.5rem);
-      font-weight: 500;
-      pointer-events: none;
-      -moz-transition: opacity 0.3s ease;
-      transition: opacity 0.3s ease;
-    }
-
-    .map-status-overlay.is-hidden {
-      opacity: 0;
-    }
-
-    .partners-banner {
-      padding: 1.05vh 1.8vw;
-      background: linear-gradient(90deg, rgba(56, 189, 248, 0.16), rgba(14, 165, 233, 0.08), rgba(56, 189, 248, 0.16));
-      border: 1px solid rgba(56, 189, 248, 0.34);
-      border-radius: 16px;
-      font-size: clamp(1.2rem, 1.75vw, 1.8rem);
-      color: #f8fafc;
-      font-weight: 700;
-      letter-spacing: 0.6px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-shrink: 0;
-      box-shadow: 0 10px 24px -10px rgba(2, 132, 199, 0.35);
-    }
-
-    .partners-banner-sub {
-      font-size: clamp(0.95rem, 1.2vw, 1.25rem);
-      font-weight: 600;
-      color: #bae6fd;
-      background: rgba(15, 23, 42, 0.45);
-      border: 1px solid rgba(186, 230, 253, 0.18);
-      padding: 0.35vh 0.9vw;
-      border-radius: 10px;
-      letter-spacing: 0.2px;
-      white-space: nowrap;
-    }
 
     /* Formalités d'accueil */
     .card-checkin {
